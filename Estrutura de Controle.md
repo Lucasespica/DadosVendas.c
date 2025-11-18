@@ -6,7 +6,7 @@
 * Valor da Transação:
   
   * Mensagem de Erro: `"Os campos não foram preenchidos corretamente, por favor complete-os novamente!"`
-  * Mensagem de Sucesso: `O Pet <nome> de ID: <id_num> foi cadastrado com sucesso!`
+  * Mensagem de Sucesso: `A venda de ID: <id_num> pelo <vendedor> com matrícula <matricula> foi cadastrado com sucesso!`
 
 ---
 
