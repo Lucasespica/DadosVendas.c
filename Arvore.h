@@ -10,9 +10,22 @@
 //As bibliotecas ja estao inclusas, nao precisa no main
 //precisamos alterar as coisas na biblioteca
 //e tirar os comentarios no final
+
+typedef struct Data
+{
+    int dia;
+    int mes;
+    int ano;
+}Data;
+
 typedef struct NoArvore
 {
-    int info;
+    int ID;
+    char cliente[50];
+    char vendedor[50];
+    char matricula[4];
+    Data dataTransacao;
+    float valorVenda;
     struct NoArvore *esq;
     struct NoArvore *dir;
 
@@ -34,7 +47,8 @@ Arv *criaArv()
 
 void preOrder(NoArv *a1)
 {
-    printf("%d ", a1->info);
+    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
     if (a1->dir != NULL)
     {
         preOrder(a1->dir);
@@ -55,7 +69,8 @@ void posOrder(NoArv *a1)
     {
         posOrder(a1->esq);
     }
-    printf("%d ", a1->info);
+    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
 }
 
 void inOrder(NoArv *a1)
@@ -64,7 +79,8 @@ void inOrder(NoArv *a1)
     {
         inOrder(a1->dir);
     }
-    printf("%d ", a1->info);
+    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
     if (a1->esq != NULL)
     {
         inOrder(a1->esq);
@@ -82,11 +98,11 @@ int Arv_vazia(Arv *a1)
 int Busca(NoArv *a1, int num)
 {
     NoArv *pai = a1;
-    if (pai->info == num)
+    if (pai->ID == num)
     {
         return 1;
     }
-    if (num > pai->info)
+    if (num > pai->ID)
     {
         if (pai->dir != NULL)
         {
@@ -101,12 +117,18 @@ int Busca(NoArv *a1, int num)
     return 0;
 }
 
-NoArv *aux_insere(NoArv *no, int num)
+NoArv *aux_insere(NoArv *no, int num, char cliente[], char vendedor[], Data dataV, float venda, char matricula[])
 {
     int flag;
     NoArv *Pai;
     NoArv *novo = (NoArv*)malloc(sizeof(NoArv));
-    novo->info = num;
+    novo->ID = num;
+    strcpy(novo->cliente, cliente);
+    strcpy(novo->vendedor, vendedor);
+    novo->dataTransacao = dataV;
+    novo->valorVenda = venda;
+    strcpy(novo->matricula, matricula);
+
     novo->dir = NULL;
     novo->esq = NULL;
     if (no == NULL)
@@ -119,13 +141,13 @@ NoArv *aux_insere(NoArv *no, int num)
         flag = 0;
         while (flag == 0)
         {
-            if (Pai->info == num)
+            if (Pai->ID == num)
             {
                 printf("\nNumero repetido.");
                 free(novo);
                 return no;
             }
-            if (num > Pai->info)
+            if (num > Pai->ID)
             {
                 if (Pai->dir == NULL)
                 {
@@ -139,7 +161,7 @@ NoArv *aux_insere(NoArv *no, int num)
             }
             else
             {
-                if (num < Pai->info)
+                if (num < Pai->ID)
                 {
                     if (Pai->esq == NULL)
                     {
@@ -157,9 +179,9 @@ NoArv *aux_insere(NoArv *no, int num)
     return no;
 }
 
-void insereArv(Arv *arvore, int num)
+void insereArv(Arv *arvore, int num, char cliente[], char vendedor[], Data dataV, float venda, char matricula[])
 {
-    arvore->raiz = aux_insere(arvore->raiz,num);
+    arvore->raiz = aux_insere(arvore->raiz,num, cliente, vendedor, dataV, venda, matricula);
 }
 
 NoArv *remover_aux(NoArv *Pai, int num)
@@ -170,13 +192,13 @@ NoArv *remover_aux(NoArv *Pai, int num)
         return NULL;
     }
 
-    if (num > Pai->info)
+    if (num > Pai->ID)
     {
         Pai->dir = remover_aux(Pai->dir, num);
     }
     else
     {
-        if (num < Pai->info)
+        if (num < Pai->ID)
         {
             Pai->esq = remover_aux(Pai->esq, num);
         }
@@ -211,8 +233,8 @@ NoArv *remover_aux(NoArv *Pai, int num)
                             aux = aux->dir;
                         }
 
-                        Pai->info = aux->info;
-                        Pai->esq = remover_aux(Pai->esq, aux->info);
+                        Pai->ID = aux->ID;
+                        Pai->esq = remover_aux(Pai->esq, aux->ID);
                     }
                 }
             }
@@ -225,7 +247,7 @@ NoArv *remover_aux(NoArv *Pai, int num)
 Arv *remover(Arv *RAIZ, int num)
 {
     NoArv *aux = RAIZ->raiz;
-    if (aux->info == num && aux->dir == NULL && aux->esq == NULL)
+    if (aux->ID == num && aux->dir == NULL && aux->esq == NULL)
     {
         free(aux);
         free(RAIZ);
