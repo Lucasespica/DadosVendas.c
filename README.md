@@ -31,7 +31,7 @@ O time deverá adaptar a biblioteca de Arvore 'Arvore.h'.
 ### 2. Listar todas as vendas.
 - O usuário terá a opção de obter a listagem em ordem crescente ou decrescente de ID.
 - Imprimir os dados em forma de uma tabela, onde o cabeçalho da tabela deve ser:
-  <ID | Vendedor | Matrícula |Cliente | Data de Transação| Valor(R$)>
+  <ID | Vendedor | Matrícula | Cliente | Data de Transação| Valor(R$)>
 
 ### 3. Buscar as vendas de um determinado Vendedor
 - A busca poderá ser realizada pela Matrícula ou Nome do Vendedor. A impressão dos dados deverá seguir o modelo abaixo:
