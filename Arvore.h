@@ -6,10 +6,7 @@
 #include <locale.h>
 #include <string.h>
 #include <stdbool.h>
-
-//As bibliotecas ja estao inclusas, nao precisa no main
-//precisamos alterar as coisas na biblioteca
-//e tirar os comentarios no final
+#include <ctype.h>
 
 typedef struct Data
 {
@@ -23,7 +20,7 @@ typedef struct NoArvore
     int ID;
     char cliente[50];
     char vendedor[50];
-    char matricula[4];
+    char matricula[5];
     Data dataTransacao;
     float valorVenda;
     struct NoArvore *esq;
@@ -47,8 +44,8 @@ Arv *criaArv()
 
 void preOrder(NoArv *a1)
 {
-    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
-           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
+    printf("\nID: %d| Vendedor: %s| Matricula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f\n", a1->ID, a1->vendedor, a1->matricula, a1->cliente,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano, a1->valorVenda);
     if (a1->dir != NULL)
     {
         preOrder(a1->dir);
@@ -69,8 +66,8 @@ void posOrder(NoArv *a1)
     {
         posOrder(a1->esq);
     }
-    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
-           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
+    printf("\nID: %d| Vendedor: %s| Matricula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f\n", a1->ID, a1->vendedor, a1->matricula, a1->cliente,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano, a1->valorVenda);
 }
 
 void inOrder(NoArv *a1)
@@ -79,8 +76,8 @@ void inOrder(NoArv *a1)
     {
         inOrder(a1->dir);
     }
-    printf("ID: %d| Vendedor: %s| Matrícula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f", a1->ID, a1->vendedor, a1->matricula,
-           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano);
+    printf("\nID: %d| Vendedor: %s| Matricula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f\n", a1->ID, a1->vendedor, a1->matricula, a1->cliente,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano, a1->valorVenda);
     if (a1->esq != NULL)
     {
         inOrder(a1->esq);
@@ -116,6 +113,22 @@ int Busca(NoArv *a1, int num)
     }
     return 0;
 }
+
+NoArv* BuscaPorMatricula(NoArv *a1, const char matricula[])
+{
+    if (a1 == NULL)
+        return NULL;
+
+    if (strcmp(a1->matricula, matricula) == 0)
+        return a1;
+
+    NoArv *esq = BuscaPorMatricula(a1->esq, matricula);
+    if (esq != NULL)
+        return esq;
+
+    return BuscaPorMatricula(a1->dir, matricula);
+}
+
 
 NoArv *aux_insere(NoArv *no, int num, char cliente[], char vendedor[], Data dataV, float venda, char matricula[])
 {
