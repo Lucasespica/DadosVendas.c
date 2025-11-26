@@ -164,10 +164,14 @@ void novaVenda(Arv *a1)
     }
     while(!validarTexto(nomeCliente));
 
+    time_t mytime;
+    mytime = time(NULL);
+    struct tm tm = *localtime(&mytime);
+
     do
     {
        dataValida = 1;
-       printf("\nDigite a data de nascimento (dd/mm/aaaa): ");
+       printf("\nDigite a data da venda (dd/mm/aaaa): ");
        scanf("%11s", input);
        while (getchar() != '\n');
 
@@ -187,7 +191,7 @@ void novaVenda(Arv *a1)
            printf("\nMes invalido! Tente novamente.\n");
            dataValida = 0;
        }
-       if (dataInsercao.ano < 1995 || dataInsercao.ano > 2100)
+       if (dataInsercao.ano < 1995 || dataInsercao.ano > tm.tm_year + 1900)
        {
            printf("\nAno invalido! Tente novamente.\n");
            dataValida = 0;
