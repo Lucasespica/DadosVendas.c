@@ -225,8 +225,70 @@ void novaVenda(Arv *a1)
 
 }
 
+void inOrderCrescente(NoArv *a1)
+{
+    if (a1 == NULL)
+        return;
+        
+    if (a1->esq != NULL)
+    {
+        inOrderCrescente(a1->esq);
+    }
+    
+    printf("\nID: %d | Vendedor: %s | Matricula: %s | Cliente: %s | Data de Transacao: %d/%d/%d | Valor(R$): %.2f\n", 
+           a1->ID, a1->vendedor, a1->matricula, a1->cliente,
+           a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano, a1->valorVenda);
+    
+    if (a1->dir != NULL)
+    {
+        inOrderCrescente(a1->dir);
+    }
+}
+
+void listarVendas(Arv *a1)
+{
+    if (Arv_vazia(a1))
+    {
+        printf("\nNao ha nenhuma venda registrada!\n");
+        return;
+    }
+
+    int opcaoOrdem;
+    
+    printf("\n=== Listagem de Vendas ===\n");
+    printf("\nEscolha a ordem de listagem:\n");
+    printf("1. Ordem decrescente de ID\n");
+    printf("2. Ordem crescente de ID\n");
+    printf("\nOpcao: ");
+    
+    if (!scanf("%d", &opcaoOrdem))
+    {
+        fflush(stdin);
+        printf("\nOpcao invalida! Digite um numero.\n");
+        return;
+    }
+    
+    while (getchar() != '\n');
+    
+    printf("\n=== Vendas Registradas ===\n");
+    
+    if (opcaoOrdem == 1)
+    {
+        inOrder(a1->raiz);
+    }
+    else if (opcaoOrdem == 2)
+    {
+        inOrderCrescente(a1->raiz);
+    }
+    else
+    {
+        printf("\nOpcao invalida!\n");
+        return;
+    }
+}
+
 //--------------------------------------------------------------------------------------
-//funcões estatísticas
+//funcoes estatisticas
 
 int contarNos(NoArv *no) {
     if (no == NULL)
@@ -308,6 +370,47 @@ void estatistica(Arv *a1)
     system("cls");
 }
 
+void removerVenda(Arv *a1)
+{
+    if (Arv_vazia(a1))
+    {
+        printf("\nNao ha vendas registradas!\n");
+        return;
+    }
+
+    int idRemover;
+    
+    printf("\n=== Remocao de Venda ====\n");
+    printf("\nInsira o ID para a exclusao (Enter para avancar): ");
+    
+    if (!scanf("%d", &idRemover))
+    {
+        fflush(stdin);
+        printf("\nID invalido! Digite um numero.\n");
+        return;
+    }
+    
+    while (getchar() != '\n');
+    
+    if (!Busca(a1->raiz, idRemover))
+    {
+        printf("\nNao ha vendas registradas com este ID.\n");
+        return;
+    }
+    
+    Arv *resultado = remover(a1, idRemover);
+    
+    if (resultado == NULL)
+    {
+        printf("\nVenda removida com sucesso!\n");
+        printf("A arvore de vendas agora esta vazia.\n");
+        a1 = criaArv();
+        return;
+    }
+    
+    printf("\nVenda removida com sucesso!\n");
+}
+
 //--------------------------------------------------------------------------------------
 void exibirMenu()
 {
@@ -320,7 +423,7 @@ void exibirMenu()
     printf("3. Buscar as vendas de um determinado vendedor\n");
     printf("4. Listar vendas acima ou abaixo de um valor definido\n");
     printf("5. Exibir estatisticas\n");
-    printf("6. Remoção de uma venda\n");
+    printf("6. Remocao de uma venda\n");
     printf("7. Sair\n");
     printf("\nEscolha a funcionalidade desejada: ");
 }
@@ -353,7 +456,7 @@ int main()
 
         case 2:
             system("cls");
-            //implementar
+            listarVendas(arvorePrincipal);
             break;
 
         case 3:
@@ -373,7 +476,7 @@ int main()
 
         case 6:
             system("cls");
-            //implementar
+            removerVenda(arvorePrincipal);
             break;
 
         case 7:
