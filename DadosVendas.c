@@ -217,7 +217,7 @@ void novaVenda(Arv *a1)
     insereArv(a1, ID, nomeCliente, nomeVendedor, dataInsercao, valorTransacao, matricula);
     printf("\nVenda cadastrada com sucesso! Dados da venda:\n");
 
-    printf("\nID: %d| Vendedor: %s| Matricula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %f\n", ID, nomeVendedor, matricula,
+    printf("\nID: %d| Vendedor: %s| Matricula: %s| Cliente: %s| Data de Transacao: %d/%d/%d| Valor(R$): %.2f\n", ID, nomeVendedor, matricula,
            nomeCliente, dataInsercao.dia, dataInsercao.mes, dataInsercao.ano, valorTransacao);
 
     system("pause");
@@ -225,6 +225,90 @@ void novaVenda(Arv *a1)
 
 }
 
+//--------------------------------------------------------------------------------------
+//funcões estatísticas
+
+int contarNos(NoArv *no) {
+    if (no == NULL)
+    {
+        return 0;
+    }
+    return 1 + contarNos(no->esq) + contarNos(no->dir);
+}
+
+float somarVendas(NoArv *no) {
+    if (no == NULL)
+    {
+        return 0;
+    }
+    return no->valorVenda + somarVendas(no->esq) + somarVendas(no->dir);
+}
+
+float media(float valor, int num)
+{
+    float med = valor/num;
+    return med;
+}
+
+float maiorVenda(NoArv *no) {
+    if (no == NULL) return 0;
+
+    float maior = no->valorVenda;
+
+    float e = maiorVenda(no->esq);
+    float d = maiorVenda(no->dir);
+
+    if (e > maior)
+    {
+        maior = e;
+    }
+    if (d > maior)
+    {
+        maior = d;
+    }
+
+    return maior;
+}
+
+float menorVenda(NoArv *no) {
+    if (no == NULL) return 999999999; // valor grande
+
+    float menor = no->valorVenda;
+
+    float e = menorVenda(no->esq);
+    float d = menorVenda(no->dir);
+
+    if (e < menor)
+    {
+        menor = e;
+    }
+
+    if (d < menor)
+    {
+        menor = d;
+    }
+
+    return menor;
+}
+
+
+void estatistica(Arv *a1)
+{
+    int numTotal = contarNos(a1->raiz);
+    float somaVenda = somarVendas(a1->raiz);
+
+    printf("\nEstatistica das vendas: \n");
+    printf("\nNumero de vendas: %d\n", numTotal);
+    printf("Soma total das vendas: %.2f\n", somaVenda);
+    printf("Media das vendas: %.2f\n", media(somaVenda, numTotal));
+    printf("Maior venda: %.2f\n", maiorVenda(a1->raiz));
+    printf("Menor venda: %.2f\n", menorVenda(a1->raiz));
+
+    system("pause");
+    system("cls");
+}
+
+//--------------------------------------------------------------------------------------
 void exibirMenu()
 {
     printf("\n====================================================================\n");
@@ -252,8 +336,10 @@ int main()
     {
         exibirMenu();
 
-        if (scanf("%d", &opcao) != 1)
+        if (!scanf("%d", &opcao))
         {
+            fflush(stdin);
+            system("cls");
             printf("\nOpcao invalida! Digite um numero.\n");
             continue;
         }
@@ -282,7 +368,7 @@ int main()
 
         case 5:
             system("cls");
-            //implementar
+            estatistica(arvorePrincipal);
             break;
 
         case 6:
@@ -296,15 +382,14 @@ int main()
             break;
 
         default:
+            system("cls");
             printf("\nOpcao invalida! Escolha uma opcao valida.\n");
         }
 
-    }
-    while (opcao != 7);
+    } while (opcao != 7);
 
     liberaArv(arvorePrincipal->raiz);
     printf("Sistema encerrado com sucesso!\n");
 
     return 0;
-
 }
