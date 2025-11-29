@@ -291,7 +291,6 @@ void listarVendas(Arv *a1)
 //Listar vendas acima ou abaixo de um valor definido
 /* Estrutura da Lista a ser usada na coleta dos valores ACIMA
 ou ABAIXO do valor escolhido pelo usuario*/
-
 typedef struct Lista {
     int ID;
     char cliente[50];
@@ -381,7 +380,7 @@ void encontrar_larguras_lista(Lista *L, int *maxVend, int *maxMat, int *maxCli)
 void imprimir_lista_formatada(Lista *L, int maxVend, int maxMat, int maxCli)
 {
     char formato[200];
-    
+
     sprintf(formato,"%%-6d | %%-%ds | %%-%ds | %%-%ds | %%02d/%%02d/%%04d | R$%%.2f\n",maxVend, maxMat, maxCli);
 
     for (Lista* p = L; p != NULL; p = p->prox)
@@ -391,7 +390,7 @@ void imprimir_lista_formatada(Lista *L, int maxVend, int maxMat, int maxCli)
 }
 
 
-void imprime_vendas(NoArv* Arvore)
+void imprime_vendas(Arv* Arvore)
 {
     int filtrando_acima_abaixo;
     float valor;
@@ -423,7 +422,7 @@ void imprime_vendas(NoArv* Arvore)
 
     system("cls");
 
-    if(Arvore == NULL)
+    if(Arvore->raiz == NULL)
     {
         printf("Não ha valores registrados\n");
         printf("Pressione ENTER para retornar ao MENU\n");
@@ -458,44 +457,72 @@ void imprime_vendas(NoArv* Arvore)
         break;
     }
 
-system("cls");
+    system("cls");
 
 
     Lista* L = NULL;
 
     if (filtrando_acima_abaixo == 1)
     {
-        lista_coleta_acima(Arvore, valor, &L);
+        lista_coleta_acima(Arvore->raiz, valor, &L);
 
         if (L == NULL)
         {
             printf("Nao ha valores maiores que o inserido.\n");
+
+            printf("\nPressione ENTER para continuar...");
+            while (getchar() != '\n');
+            getchar();
+
+            system("cls");
+            return;
         }
         else
         {
             int mv, mm, mc;
             encontrar_larguras_lista(L, &mv, &mm, &mc);
             imprimir_lista_formatada(L, mv, mm, mc);
+
+            printf("\nPressione ENTER para continuar...");
+            while (getchar() != '\n');
+            getchar();
+
+            system("cls");
         }
     }
     else
     {
-        lista_coleta_abaixo(Arvore, valor, &L);
+        lista_coleta_abaixo(Arvore->raiz, valor, &L);
 
         if (L == NULL)
         {
             printf("Nao ha valores menores que o inserido.\n");
+
+            printf("\nPressione ENTER para continuar...");
+            while (getchar() != '\n');
+            getchar();
+
+            system("cls");
+            return;
         }
         else
         {
             int mv, mm, mc;
             encontrar_larguras_lista(L, &mv, &mm, &mc);
             imprimir_lista_formatada(L, mv, mm, mc);
+
+            printf("\nPressione ENTER para continuar...");
+            while (getchar() != '\n');
+            getchar();
+
+            system("cls");
         }
     }
 
+
     libera_lista(L);
 }
+
 
 //--------------------------------------------------------------------------------------
 //funcoes estatisticas
