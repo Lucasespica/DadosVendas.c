@@ -570,10 +570,6 @@ void imprime_vendas(Arv* Arvore)
     libera_lista(L);
 }
 
-
-//--------------------------------------------------------------------------------------
-//funcoes estatisticas
-
 int contarNos(NoArv *no) {
     if (no == NULL)
     {
@@ -705,7 +701,6 @@ void removerVenda(Arv *a1)
     printf("\nVenda removida com sucesso!\n");
 }
 
-//--------------------------------------------------------------------------------------
 void exibirMenu()
 {
     printf("\n====================================================================\n");
