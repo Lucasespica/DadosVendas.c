@@ -285,12 +285,60 @@ void listarVendas(Arv *a1)
         printf("\nOpcao invalida!\n");
         return;
     }
+    system("pause");
+    system("cls");
 }
 
-//Função 4
-//Listar vendas acima ou abaixo de um valor definido
-/* Estrutura da Lista a ser usada na coleta dos valores ACIMA
-ou ABAIXO do valor escolhido pelo usuario*/
+void auxPercorre(NoArv *no, char *nomeBuscado, int *achou) {
+    if (no == NULL) return;
+
+    auxPercorre(no->esq, nomeBuscado, achou);
+
+    if (strcmp(no->vendedor, nomeBuscado) == 0 || strcmp(no->matricula, nomeBuscado) == 0) {
+
+        if (*achou == 0) {
+            printf("\n=== Vendas Encontradas ===\n");
+            printf("%-6s | %-12s | %-15s | %-10s | %s\n", "ID", "Matricula", "Cliente", "Data", "Valor (R$)");
+            printf("--------------------------------------------------------------------------------------\n");
+            *achou = 1;
+        }
+
+        printf("%-6d | %-12s | %-15s | %02d/%02d/%04d | R$ %.2f\n",
+               no->ID, no->matricula, no->cliente,
+               no->dataTransacao.dia, no->dataTransacao.mes, no->dataTransacao.ano,
+               no->valorVenda);
+    }
+
+    auxPercorre(no->dir, nomeBuscado, achou);
+}
+
+
+void BuscaVendedor(NoArv *a1) {
+
+    if (a1 == NULL) {
+        printf("\nArvore vazia / Nao ha vendas.\n");
+        return;
+    }
+
+    char nome[50];
+    int flag = 0;
+
+    printf("\nDigite o Nome do Vendedor ou Matricula: ");
+    scanf(" %49[^\n]", nome);
+    while(getchar() != '\n');
+
+    auxPercorre(a1, nome, &flag);
+
+    if (flag == 0) {
+        printf("\nNenhum registro encontrado para '%s'.\n", nome);
+    } else {
+        printf("--------------------------------------------------------------------------------------\n");
+    }
+
+    system("pause");
+    system("cls");
+}
+
 typedef struct Lista {
     int ID;
     char cliente[50];
@@ -519,7 +567,6 @@ void imprime_vendas(Arv* Arvore)
         }
     }
 
-
     libera_lista(L);
 }
 
@@ -708,7 +755,7 @@ int main()
 
         case 3:
             system("cls");
-            //implementar
+            BuscaVendedor(arvorePrincipal->raiz);
             break;
 
         case 4:
