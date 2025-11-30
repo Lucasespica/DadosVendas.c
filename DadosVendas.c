@@ -229,16 +229,16 @@ void inOrderCrescente(NoArv *a1)
 {
     if (a1 == NULL)
         return;
-        
+
     if (a1->esq != NULL)
     {
         inOrderCrescente(a1->esq);
     }
-    
-    printf("\nID: %d | Vendedor: %s | Matricula: %s | Cliente: %s | Data de Transacao: %d/%d/%d | Valor(R$): %.2f\n", 
+
+    printf("\nID: %d | Vendedor: %s | Matricula: %s | Cliente: %s | Data de Transacao: %d/%d/%d | Valor(R$): %.2f\n",
            a1->ID, a1->vendedor, a1->matricula, a1->cliente,
            a1->dataTransacao.dia, a1->dataTransacao.mes, a1->dataTransacao.ano, a1->valorVenda);
-    
+
     if (a1->dir != NULL)
     {
         inOrderCrescente(a1->dir);
@@ -254,24 +254,24 @@ void listarVendas(Arv *a1)
     }
 
     int opcaoOrdem;
-    
+
     printf("\n=== Listagem de Vendas ===\n");
     printf("\nEscolha a ordem de listagem:\n");
     printf("1. Ordem decrescente de ID\n");
     printf("2. Ordem crescente de ID\n");
     printf("\nOpcao: ");
-    
+
     if (!scanf("%d", &opcaoOrdem))
     {
         fflush(stdin);
         printf("\nOpcao invalida! Digite um numero.\n");
         return;
     }
-    
+
     while (getchar() != '\n');
-    
+
     printf("\n=== Vendas Registradas ===\n");
-    
+
     if (opcaoOrdem == 1)
     {
         inOrder(a1->raiz);
@@ -545,12 +545,19 @@ float somarVendas(NoArv *no) {
 
 float media(float valor, int num)
 {
+    if (valor == 0 || num ==0)
+        {
+            return 0;
+        }
     float med = valor/num;
     return med;
 }
 
 float maiorVenda(NoArv *no) {
-    if (no == NULL) return 0;
+    if (no == NULL)
+    {
+        return 0;
+    }
 
     float maior = no->valorVenda;
 
@@ -570,7 +577,10 @@ float maiorVenda(NoArv *no) {
 }
 
 float menorVenda(NoArv *no) {
-    if (no == NULL) return 999999999; // valor grande
+    if (no == NULL)
+    {
+        return 999999999;
+    }
 
     float menor = no->valorVenda;
 
@@ -616,27 +626,27 @@ void removerVenda(Arv *a1)
     }
 
     int idRemover;
-    
+
     printf("\n=== Remocao de Venda ====\n");
     printf("\nInsira o ID para a exclusao (Enter para avancar): ");
-    
+
     if (!scanf("%d", &idRemover))
     {
         fflush(stdin);
         printf("\nID invalido! Digite um numero.\n");
         return;
     }
-    
+
     while (getchar() != '\n');
-    
+
     if (!Busca(a1->raiz, idRemover))
     {
         printf("\nNao ha vendas registradas com este ID.\n");
         return;
     }
-    
+
     Arv *resultado = remover(a1, idRemover);
-    
+
     if (resultado == NULL)
     {
         printf("\nVenda removida com sucesso!\n");
@@ -644,7 +654,7 @@ void removerVenda(Arv *a1)
         a1 = criaArv();
         return;
     }
-    
+
     printf("\nVenda removida com sucesso!\n");
 }
 
@@ -703,7 +713,7 @@ int main()
 
         case 4:
             system("cls");
-            //implementar
+            imprime_vendas(arvorePrincipal);
             break;
 
         case 5:
